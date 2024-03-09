@@ -1,0 +1,25 @@
+version: "1"
+services:
+  postgres:
+    container_name: postgres_minesweeper_container
+    image: postgres
+    environment:
+        POSTGRES_DB: "minesweeper_db"
+        POSTGRES_USER: "postgres"
+        POSTGRES_PASSWORD: "postgres"
+        PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - "./db:/var/lib/postgresql/data"
+    ports:
+      - "6432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d minesweeper_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - postgres
+networks:
+  postgres:
+    driver: bridge
